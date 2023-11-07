@@ -1,0 +1,24 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "bw:bewitched_spell_guide"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"#B",
+			"I"
+		],
+		"key": {
+			"#": "minecraft:iron_nugget",
+			"I": "minecraft:ink_sac",
+			"B": "minecraft:writable_book"
+		},
+		"unlock": [
+      {
+        "item": "minecraft:ink_sac"
+      }
+    ],
+		"result": "bw:bewitched_book"
+	}
+}

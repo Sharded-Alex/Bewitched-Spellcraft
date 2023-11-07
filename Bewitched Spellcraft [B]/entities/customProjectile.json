@@ -1,0 +1,64 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "bw:projectile",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"runtime_identifier": "minecraft:snowball",
+			"scripts": {
+        "animate": [
+          "particle_trail"
+        ]
+      },
+      "animations": {
+        "particle_trail": "controller.animation.trails"
+      }
+		},
+    "component_groups": {
+      "despawn": {
+        "minecraft:instant_despawn": {}
+      }
+    },
+		"components": {
+			"minecraft:type_family": {
+				"family": [
+					"incantation"
+				]
+			},
+			"minecraft:despawn": {
+        "despawn_from_distance": {}
+      },
+			"minecraft:projectile": {
+				"gravity": 0,
+				"liquid_inertia": 1,
+				"on_hit": {
+					"impact_damage": {
+						"damage": 0
+					},
+					"definition_event": {
+					  "affect_projectile": true,
+						"event_trigger": {
+							"event": "bw:hit"
+						}
+					},
+					"stick_in_ground": {
+            "shake_time": 0.99
+          }
+				}
+			},
+			"minecraft:physics": {
+			  "has_collision": true
+			}
+		},
+		"events": {
+			"bw:hit": {
+			  "add": {
+			    "component_groups": [
+			      "despawn"
+			    ]
+			  }
+			}
+		}
+	}
+}

@@ -1,0 +1,32 @@
+{
+   "resource_pack_name" : "vanilla",
+   "texture_data" : {
+      "emerald_wand" : {
+         "textures" : "textures/items/spell_tools/emerald_wand"
+      },
+      "diamond_wand" : {
+         "textures" : "textures/items/spell_tools/diamond_wand"
+      },
+      "amethyst_wand" : {
+         "textures" : "textures/items/spell_tools/amethyst_wand"
+      },
+      "clay_rune" : {
+         "textures" : "textures/items/spell_tools/clay_spellrune"
+      },
+      "baked_rune" : {
+         "textures" : "textures/items/spell_tools/baked_spellrune"
+      },
+      "inscribed_rune" : {
+         "textures" : "textures/items/spell_tools/activated_spellrune"
+      },
+      "empty_spell_journal" : {
+         "textures" : "textures/items/spell_tools/empty_spellbook"
+      },
+      "spell_journal" : {
+         "textures" : "textures/items/spell_tools/named_spellbook"
+      },
+      "spell_guide" : {
+         "textures" : "textures/items/bewitched_book"
+      }
+   }
+}

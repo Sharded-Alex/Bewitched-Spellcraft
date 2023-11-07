@@ -1,0 +1,17 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "bw:clear_spellrune"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"C#"
+		],
+		"key": {
+			"C": "minecraft:clay_ball",
+			"#": "bw:inscribed_rune"
+		},
+		"result": "bw:baked_rune"
+	}
+}
