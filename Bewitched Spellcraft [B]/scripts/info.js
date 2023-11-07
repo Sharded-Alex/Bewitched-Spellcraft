@@ -576,7 +576,7 @@ export const information = {
         }
       },
       {
-        "buttonName": "Fanhus",
+        "buttonName": "Fanhes",
         "buttonIcon": "textures/items/book_normal",
         "buttonTagRequirements": ["incant:inst_health"],
         "onClick": {
