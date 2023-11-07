@@ -355,6 +355,19 @@ export let effectWord = [
     }
   }, // Night Vision
   {
+    "word": "FANCUL",
+    "tag": ["incant:resistance"],
+    "effectType": "potion_effect",
+    "value": {
+      "effect": "resistance",
+      "duration": 10
+    },
+    "OE_cost": {
+      "operation": "add",
+      "number": 25
+    }
+  }, // Resistance
+  {
     "word": "YICYIQ",
     "tag": ["incant:wither"],
     "effectType": "potion_effect",
@@ -427,7 +440,7 @@ export let modifierWord = [
       "item": "none",
       "consumed": false
     },
-    "valid": ["HUS", "HES", "SINBASHUS", "BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HUSCOR", "HESAYIC", "FANHUS", "FANHES", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN", "WISPUS", "SPARKIS"],
+    "valid": ["HUS", "HES", "SINBASHUS", "BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HUSCOR", "HESAYIC", "FANHUS", "FANHES", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "FANCUL", "YICYIQ", "MALVAR", "YINFAN", "WISPUS", "SPARKIS"],
     "modifierType": "null",
     "OE_cost": {
       "operation": "multiply",
@@ -441,7 +454,7 @@ export let modifierWord = [
       "item": "minecraft:iron_ingot",
       "consumed": true
     },
-    "valid": ["HUS", "HES", "BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "FANHUS", "FANHES", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["HUS", "HES", "BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "FANCUL", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "FANHUS", "FANHES", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR"],
     "modifierType": "power",
     "value": 1,
     "OE_cost": {
@@ -455,7 +468,7 @@ export let modifierWord = [
       "item": "minecraft:diamond",
       "consumed": true
     },
-    "valid": ["BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HESAYIC", "FANHUS", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "FANHES", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR"],
     "modifierType": "power",
     "value": 2,
     "OE_cost": {
@@ -470,7 +483,7 @@ export let modifierWord = [
       "item": "minecraft:double_plant",
       "consumed": true
     },
-    "valid": ["HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIE", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIE", "MALFIEVAR", "REDESI", "FANCUL", "XABESI", "ESIEME", "YICYIQ", "MALVAR"],
     "modifierType": "duration",
     "value": 2,
     "OE_cost": {
@@ -484,7 +497,7 @@ export let modifierWord = [
       "item": "minecraft:clock",
       "consumed": false
     },
-    "valid": ["HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIE", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "SEMAYIQ", "FANCUL", "YINÏLIC", "MALVER", "MALBIE", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR", "YINFAN"],
     "modifierType": "duration",
     "value": 3,
     "OE_cost": {
@@ -499,7 +512,7 @@ export let modifierWord = [
       "item": "minecraft:gunpowder",
       "consumed": true
     },
-    "valid": ["HUS", "HES", "BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HUSCOR", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "FANHUS", "FANHES", "SINBASHUS", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["HUS", "HES", "BISHUSCOR", "MALBIE", "BIS", "QAR", "QARÏLIC", "HUSCOR", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "FANHUS", "FANHES", "SINBASHUS", "SEMAYIQ", "YINÏLIC", "MALVER", "FANCUL", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN"],
     "modifierType": "radius",
     "value": 2,
     "OE_cost": {
@@ -513,7 +526,7 @@ export let modifierWord = [
       "item": "minecraft:web",
       "consumed": true
     },
-    "valid": ["HUS", "HES", "BISHUSCOR", "MALBIE", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "BIS", "QAR", "QARÏLIC", "FANHUS", "FANHES", "SINBASHUS", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["HUS", "HES", "FANCUL", "BISHUSCOR", "MALBIE", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "BIS", "QAR", "QARÏLIC", "FANHUS", "FANHES", "SINBASHUS", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN"],
     "modifierType": "radius",
     "value": 3,
     "OE_cost": {
@@ -527,7 +540,7 @@ export let modifierWord = [
       "item": "minecraft:dragon_breath",
       "consumed": true
     },
-    "valid": ["HUS", "HES", "BISHUSCOR", "MALBIE", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "BIS", "QAR", "QARÏLIC", "FANHUS", "FANHES", "SINBASHUS", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN"],
+    "valid": ["HUS", "HES", "FANCUL", "BISHUSCOR", "MALBIE", "HESAYIC", "BISCUL", "QARCUL", "CUL", "MALVARYIQ", "BIS", "QAR", "QARÏLIC", "FANHUS", "FANHES", "SINBASHUS", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIEVER", "MALFIEVAR", "REDESI", "XABESI", "YICYIQ", "MALVAR", "YINFAN"],
     "modifierType": "radius",
     "value": 4,
     "OE_cost": {
