@@ -2,6 +2,7 @@
 import {world, Vector, EntityHealthComponent} from "@minecraft/server";
 import {ModalFormData} from "@minecraft/server-ui";
 import {effectWord, modifierWord} from "./spellPiece.js";
+import "./spellFunctions.js";
 
 
 // Cast Spell

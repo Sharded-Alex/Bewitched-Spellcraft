@@ -3,6 +3,7 @@ import "./incantedWords.js";
 import "./spellPiece.js";
 import "./tagAddition.js";
 import "./tagReqs.js";
+import "./spellFunctions.js";
 import {createForm} from "./formCreate.js";
 
 export function checkPlayerTags(tags, player) {
