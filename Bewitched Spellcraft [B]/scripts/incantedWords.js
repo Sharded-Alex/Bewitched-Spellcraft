@@ -187,7 +187,15 @@ world.afterEvents.itemUse.subscribe(cast => {
         spells.shift();
       }
       if (projectileArray.length > 0) {
-        castProj(projectileArray, player);
+        let particle = "default";
+        let color = "default";
+        let yisRuneCheck = selfSpell[0].split(' + ');
+        if (yisRuneCheck[0] == "YIS") {
+          particle = yisRuneCheck[1];
+          color = yisRuneCheck[2] 
+        }
+
+        castProj(projectileArray, player, [particle, color]);
       }
     }
   }
@@ -232,7 +240,14 @@ world.afterEvents.itemUse.subscribe(cast => {
           spells.shift();
         }
         if (projectileArray.length > 0) {
-          castProj(projectileArray, player, item.getLore()[0]);
+          let particle = "default";
+          let color = "default";
+          let yisBookCheck = wandSelfSpell[0].split(' + ');
+          if (yisBookCheck[0] == "YIS") {
+            particle = yisBookCheck[1];
+            color = yisBookCheck[2] 
+          }
+          castProj(projectileArray, player, [particle, color]);
         }
       } else {
         player.runCommandAsync('replaceitem entity @s slot.weapon.mainhand 0 air 1 0');

@@ -6,6 +6,7 @@ import "./tagReqs.js";
 import "./spellFunctions.js";
 import {createForm} from "./formCreate.js";
 
+let dimensions = ["overworld", "nether", "the_end"];
 export function checkPlayerTags(tags, player) {
   if (tags == undefined) { return true; }
   for (let i of tags) {
@@ -36,3 +37,21 @@ world.afterEvents.itemUse.subscribe(e => {
     }
   }
 });
+
+system.runInterval(() => {
+  for (let dim of dimensions) {
+    world.getDimension(`${dim}`).getEntities({type:"bw:projectile"}).forEach(proj => {
+      let particle = damaging.getTags().find(tag => tag.includes("projParticle:")).slice(13);
+      let color = damaging.getTags().find(tag => tag.includes("projColor:")).slice(10);
+
+      if (particle != "default") {
+        particle.toUppercase();
+      }
+      if (color != "default") {
+        color.toUppercase();
+      }
+
+      spawnParticle(`${getProjParticle(particle, color)[0] + "projectile"}`, proj.location.x, proj.location.y, proj.location.z, proj.dimension.id, getProjParticle(particle, color)[1][0], getProjParticle(particle, color)[1][1], getProjParticle(particle, color)[1][2]);
+    });
+  }
+}, 5);

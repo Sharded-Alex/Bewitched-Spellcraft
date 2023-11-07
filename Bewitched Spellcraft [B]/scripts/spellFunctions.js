@@ -38,6 +38,28 @@ export function getParticle(player) {
   
   return [returnedParticle, returnedColor];
 }
+export function getProjParticle(particle, color) {
+    let returnedParticle = "bw:wispy_particle_";
+    let returnedColor = [Math.random(), Math.random(), Math.random()];
+    
+    if (particle != "default") {
+      for (let partcl of effectWord) {
+        if (particle == partcl.word) {
+          returnedParticle = partcl.value.particleName;
+        }
+      }
+    }
+
+    if (color != "default") {
+        for (let clr of modifierWord) {
+            if (color == clr.word && clr.modifierType == "color") {
+                returnedColor = clr.value;
+            }
+        }
+    }
+    
+    return [returnedParticle, returnedColor];
+}
 export function spawnParticle(particle, xLoc, yLoc, zLoc, dimension, r, g, b) {
   const customColor = new MolangVariableMap();
   customColor.setColorRGB('variable.color', {red: r, green: g, blue: b, alpha: 1});
@@ -829,12 +851,14 @@ export function castPulse(effect, modifier, player) {
   }
 }
 
-export function castProj(effectArrays, player) {
+export function castProj(effectArrays, player, appArray) {
   const proj = world.getDimension(`${player.dimension.id}`).spawnEntity("bw:projectile", {x: player.location.x + player.getViewDirection().x * 2, y: player.location.y + 0.5 * 2, z: player.location.z + player.getViewDirection().z * 2});
   
   proj.clearVelocity;
   proj.applyImpulse({x: player.getViewDirection().x * 2, y: player.getViewDirection().y * 2, z: player.getViewDirection().z * 2});
-  
+  let particle = appArray[0];
+  let color = appArray[1];
+
   let fullSpell = '';
   for (let i = 0; i < effectArrays.length; i++) {
     if (i == 0) {
@@ -844,6 +868,8 @@ export function castProj(effectArrays, player) {
     }
   }
   
+  proj.runCommandAsync(`tag @s add "projParticle:${particle}"`);
+  proj.runCommandAsync(`tag @s add "projColor:${color}`);
   proj.runCommandAsync(`tag @s add "projSpells:${fullSpell}"`);
 }
 
