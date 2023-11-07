@@ -1,1 +1,0 @@
-execute as @e[type=bw:projectile] run particle bw:generic_spell_smoke ~~~

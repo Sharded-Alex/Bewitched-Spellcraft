@@ -5,15 +5,7 @@
 			"identifier": "bw:projectile",
 			"is_spawnable": false,
 			"is_summonable": true,
-			"runtime_identifier": "minecraft:snowball",
-			"scripts": {
-        "animate": [
-          "particle_trail"
-        ]
-      },
-      "animations": {
-        "particle_trail": "controller.animation.trails"
-      }
+			"runtime_identifier": "minecraft:snowball"
 		},
     "component_groups": {
       "despawn": {
