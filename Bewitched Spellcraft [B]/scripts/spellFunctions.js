@@ -868,8 +868,8 @@ export function castProj(effectArrays, player, appArray) {
     }
   }
   
-  proj.runCommandAsync(`tag @s add "projParticle:${particle}"`);
-  proj.runCommandAsync(`tag @s add "projColor:${color}`);
+  proj.runCommandAsync(`tag @s add projParticle:${particle}`);
+  proj.runCommandAsync(`tag @s add projColor:${color}`);
   proj.runCommandAsync(`tag @s add "projSpells:${fullSpell}"`);
 }
 

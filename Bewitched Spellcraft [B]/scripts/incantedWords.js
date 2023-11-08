@@ -2,7 +2,7 @@
 import {world, Vector, EntityHealthComponent} from "@minecraft/server";
 import {ModalFormData} from "@minecraft/server-ui";
 import {effectWord, modifierWord} from "./spellPiece.js";
-import "./spellFunctions.js";
+import {getParticle, getProjParticle, spawnParticle, getFace, getDirection, calc_OE, reduceDurability, checkValidity, checkItems, getDuration, castSelf, castTouch, castTouchBlock, castPulse, castProj, processSpell, addSpellName} from "./spellFunctions.js";
 
 
 // Cast Spell
@@ -189,10 +189,10 @@ world.afterEvents.itemUse.subscribe(cast => {
       if (projectileArray.length > 0) {
         let particle = "default";
         let color = "default";
-        let yisRuneCheck = selfSpell[0].split(' + ');
+        let yisRuneCheck = item.getLore()[0].split(' + ');
         if (yisRuneCheck[0] == "YIS") {
           particle = yisRuneCheck[1];
-          color = yisRuneCheck[2] 
+          color = yisRuneCheck[2]; 
         }
 
         castProj(projectileArray, player, [particle, color]);
@@ -242,10 +242,10 @@ world.afterEvents.itemUse.subscribe(cast => {
         if (projectileArray.length > 0) {
           let particle = "default";
           let color = "default";
-          let yisBookCheck = wandSelfSpell[0].split(' + ');
+          let yisBookCheck = offhand.getLore()[0].split(' + ');
           if (yisBookCheck[0] == "YIS") {
             particle = yisBookCheck[1];
-            color = yisBookCheck[2] 
+            color = yisBookCheck[2];
           }
           castProj(projectileArray, player, [particle, color]);
         }
