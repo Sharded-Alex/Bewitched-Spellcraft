@@ -457,7 +457,31 @@ export let effectWord = [
       "operation": "multiply",
       "number": 1
     }
-  }  // Sparky
+  },  // Sparky,
+  {
+    "word": "SMOKIS",
+    "tag": ["incant:self"],
+    "effectType": "particles",
+    "value": {
+      "particleName": "bw:smoky_particle_"
+    },
+    "OE_cost": {
+      "operation": "multiply",
+      "number": 1
+    }
+  },  // Smokey,
+  {
+    "word": "SPECTRAS",
+    "tag": ["incant:self"],
+    "effectType": "particles",
+    "value": {
+      "particleName": "bw:spectral_particle_"
+    },
+    "OE_cost": {
+      "operation": "multiply",
+      "number": 1
+    }
+  }  // Spectral
 ];
 
 export let modifierWord = [

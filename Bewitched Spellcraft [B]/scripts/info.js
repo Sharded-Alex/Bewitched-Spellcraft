@@ -348,6 +348,24 @@ export const information = {
           "value": "action.firework"
         }
       },
+      {
+        "buttonName": "Smokis",
+        "buttonIcon": "textures/items/book_normal",
+        "buttonTagRequirements": ["incant:self"],
+        "onClick": {
+          "open_form": true,
+          "value": "action.smoke"
+        }
+      },
+      {
+        "buttonName": "Spectras",
+        "buttonIcon": "textures/items/book_normal",
+        "buttonTagRequirements": ["incant:self"],
+        "onClick": {
+          "open_form": true,
+          "value": "action.spectral"
+        }
+      },
       
       {
         "buttonName": "Hus",
@@ -759,7 +777,7 @@ export const information = {
   },
   "form.customize": {
     "title": "Yis",
-    "body": "Concept: Customize*\n\nEffect: This incant applies a particle based Action to the spell of the caster. It does not work with projectiles though sadly.\n\nModifiers: Color Based Incants\n\n* This Form has a specific syntax => :YIS [ACTION] [MODIFIER] HET\n\n",
+    "body": "Concept: Customize*\n\nEffect: This incant applies a particle based Action to the spell of the caster.\n\nModifiers: Color Based Incants\n\n* This Form has a specific syntax => :YIS [ACTION] [MODIFIER] HET\n\n",
     "buttons": [
       {
         "buttonName": "Back",
@@ -1182,7 +1200,7 @@ export const information = {
   
   "action.potion": {
     "title": "Wispus",
-    "body": "Concept: Wispy Particle\n\nEffect: This incant changes the particles of a spell. It does not affect projectile spells.\n\nModifiers: Color Incants\n\n",
+    "body": "Concept: Wispy Particle\n\nEffect: This incant changes the particles of a spell.\n\nModifiers: Color Incants\n\n",
     "buttons": [
       {
         "buttonName": "Back",
@@ -1196,7 +1214,35 @@ export const information = {
   },
   "action.firework": {
     "title": "Sparkis",
-    "body": "Concept: Sparkly Particle\n\nEffect: This incant changes the particles of a spell. It does not affect projectile spells.\n\nModifiers: Color Incants\n\n",
+    "body": "Concept: Sparkly Particle\n\nEffect: This incant changes the particles of a spell.\n\nModifiers: Color Incants\n\n",
+    "buttons": [
+      {
+        "buttonName": "Back",
+        "buttonIcon": "textures/ui/arrow_dark_left_stretch",
+        "onClick": {
+          "open_form": true,
+          "value": "inc.actions"
+        }
+      }
+    ]
+  },
+  "action.smoke": {
+    "title": "Smokis",
+    "body": "Concept: Smokey Particle\n\nEffect: This incant changes the particles of a spell.\n\nModifiers: Color Incants\n\n",
+    "buttons": [
+      {
+        "buttonName": "Back",
+        "buttonIcon": "textures/ui/arrow_dark_left_stretch",
+        "onClick": {
+          "open_form": true,
+          "value": "inc.actions"
+        }
+      }
+    ]
+  },
+  "action.spectral": {
+    "title": "Spectras",
+    "body": "Concept: Ghostly Particle\n\nEffect: This incant changes the particles of a spell.\n\nModifiers: Color Incants\n\n",
     "buttons": [
       {
         "buttonName": "Back",
