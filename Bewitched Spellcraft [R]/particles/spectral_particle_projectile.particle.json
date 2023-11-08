@@ -2,9 +2,9 @@
 	"format_version": "1.10.0",
 	"particle_effect": {
 		"description": {
-			"identifier": "bw:sparkly_particle_projectile",
+			"identifier": "bw:spectral_particle_projectile",
 			"basic_render_parameters": {
-				"material": "particles_alpha",
+				"material": "particles_blend",
 				"texture": "textures/particle/particles"
 			}
 		},
@@ -30,24 +30,24 @@
         "collision_radius": 0.01
       },
       "minecraft:particle_appearance_billboard": {
-        "size": [ 0.075, 0.075 ],
-        "facing_camera_mode": "rotate_xyz",
+        "size": [ 0.1, 0.1 ],
+        "facing_camera_mode": "lookat_xyz",
         "uv": {
           "texture_width": 128,
           "texture_height": 128,
           "flipbook": {
-            "base_UV": [ 64, 96 ],
+            "base_UV": [ 56, 0 ],
             "size_UV": [ 8, 8 ],
             "step_UV": [ -8, 0 ],
-            "frames_per_second": 10,
-            "max_frame": 9,
+            "frames_per_second": 8,
+            "max_frame": 8,
             "stretch_to_lifetime": true,
             "loop": false
           }
         }
       },
       "minecraft:particle_appearance_tinting": {
-				"color": ["variable.color.r", "variable.color.g", "variable.color.b", 1]
+				"color": ["variable.color.r", "variable.color.g", "variable.color.b", 0.5]
 			}
     }
 	}
