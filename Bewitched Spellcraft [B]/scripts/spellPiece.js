@@ -149,8 +149,8 @@ export let effectWord = [
     "tag": ["incant:launch"],
     "effectType": "launch",
     "value": {
-      "horizontal": 1,
-      "vertical": 0
+      "horizontal": 2,
+      "vertical": 1.5
     },
     "OE_cost": {
       "operation": "add",
@@ -329,7 +329,8 @@ export let effectWord = [
     "tag": ["incant:levitation"],
     "effectType": "potion_effect",
     "value": {
-      "effect": "slow_falling",
+      "effect": "levitation",
+      "reverseEffect": "slow_falling",
       "duration": 10
     },
     "OE_cost": {

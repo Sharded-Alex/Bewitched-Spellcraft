@@ -517,12 +517,13 @@ world.afterEvents.entityHurt.subscribe(data => {
       magic += magicSpell[t];
       let Spell = magic.slice(1, magic.length - 1).split(',');
       let effect = `${Spell[0]}`;
-      let modifier = [`${Spell[1].slice(1, Spell[1].length)}`, `${Spell[2]}`];
+      let modifier = [`${Spell[1].slice(0, Spell[1].length)}`, `${Spell[2]}`];
       
       let spellType;
       let spellEffect;
       let modifierType;
-      var spellModifier = [0, getDuration(effect), 1, 1, [false, false]];
+      
+      let spellModifier = [0, getDuration(effect), 1, 1, [false, false]];
       
       for (let efct of effectWord) {
         if (effect === efct.word) {
@@ -558,22 +559,24 @@ world.afterEvents.entityHurt.subscribe(data => {
         }
       }
       
-      for (let mdfr of modifierWord) {
-        for (let mod in modifier) {
-          if (modifier[mod] === mdfr.word) {
+      for (let mod in modifier) {
+        for (let mdfr of modifierWord) {
+          damaging.runCommandAsync(`say ${mod}`);
+          if (modifier[mod] == mdfr.word) {
+            damaging.runCommandAsync(`say ${modifier[mod]}`);
             modifierType = mdfr.modifierType;
             switch (modifierType) {
               case "null":
                 break;
               case "power":
-                spellModifier[0] = spellModifier[0] + mdfr.value;
-                spellModifier[2] = spellModifier[0] + mdfr.value;
+                spellModifier[0] += mdfr.value;
+                spellModifier[2] += spellModifier[0] + mdfr.value;
                 break;
               case "duration":
-                spellModifier[1] = spellModifier[1] * mdfr.value;
+                spellModifier[1] *= mdfr.value;
                 break;
               case "reverse":
-                spellModifier[3] = -1;
+                spellModifier[3] *= -1;
                 break;
               case "explosion":
                 if (mdfr.value == "fireDamage") {
@@ -588,13 +591,15 @@ world.afterEvents.entityHurt.subscribe(data => {
         }
       }
       
-      if (spellType == "potion_effect" && spellModifier[3] == 1) {
+      if (spellType == "potion_effect") {
+        let bool = spellModifier[3] == -1 ? true : false;
+        console.warn(bool, spellModifier)
         if (spellEffect.effect != "clear") {
-          if (spellModifier[3] == 1 || spellEffect.reverseEffect == undefined) {
-            victim.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
+          if (bool) {
+            victim.runCommandAsync(`effect @s ${spellEffect.reverseEffect == undefined ? spellEffect.effect : spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} false`);
           }
-          if (spellModifier[3] == -1) {
-            victim.runCommandAsync(`effect @s ${spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} true`);
+          if (!bool) {
+            victim.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} false`);
           }
         } else {
           victim.runCommandAsync(`effect @s ${spellEffect.effect}`);
@@ -627,7 +632,7 @@ world.afterEvents.entityHurt.subscribe(data => {
       
       if (spellType == "launch") {
         if (victim.typeId != "minecraft:item") {
-          victim.applyKnockback(damaging.getViewDirection().x * spellModifier[3], damaging.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], damaging.getViewDirection().y * spellModifier[3]);
+          victim.applyKnockback(damaging.getViewDirection().x * spellModifier[3], damaging.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], spellEffect.vertical + spellModifier[0]);
         }
       }
     }
