@@ -677,7 +677,6 @@ export const information = {
       {
         "buttonName": "Reverse Modifier",
         "buttonIcon": "textures/items/book_normal",
-        "buttonTagRequirements": ["incant:launch"],
         "onClick": {
           "open_form": true,
           "value": "modifier.reverse"
@@ -1296,7 +1295,7 @@ export const information = {
   },
   "modifier.reverse": {
     "title": "Reverse Modifier",
-    "body": "This is a specialized Modifier that seems to be designed for Malbiever. It directly reverses its effect, allowing it to pull entities instead (items and projectile not included). It requires a Fermented Spider Eye.",
+    "body": "This is a Modifier that directly reverses the effects of its Action. As of late, it has been found to work on Malbiever & a variety of potion effect related Actions. It requires a Fermented Spider Eye.",
     "buttons": [
       {
         "buttonName": "Back",

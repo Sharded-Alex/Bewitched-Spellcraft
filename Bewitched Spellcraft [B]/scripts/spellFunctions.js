@@ -331,7 +331,7 @@ export function castSelf(effect, modifier, player) {
   }
   
   if (spellType == "launch") {
-    player.applyKnockback(player.getViewDirection().x * spellModifier[3], player.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], spellEffect.vertical + spellModifier[0]);
+    player.applyKnockback(player.getViewDirection().x * spellModifier[3], player.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], player.getViewDirection().y * spellModifier[3]);
   }
 }
 export function castTouch(effect, modifier, player, target) {
@@ -418,13 +418,13 @@ export function castTouch(effect, modifier, player, target) {
   if (spellType == "potion_effect" && spellModifier[3] == 1) {
     if (spellEffect.effect != "clear") {
       if (spellModifier[3] == 1 || spellEffect.reverseEffect == undefined) {
-        player.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
+        target.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
       }
       if (spellModifier[3] == -1) {
-        player.runCommandAsync(`effect @s ${spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} true`);
+        target.runCommandAsync(`effect @s ${spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} true`);
       }
     } else {
-      player.runCommandAsync(`effect @s ${spellEffect.effect}`);
+      target.runCommandAsync(`effect @s ${spellEffect.effect}`);
     }
   }
   
@@ -462,7 +462,7 @@ export function castTouch(effect, modifier, player, target) {
   
   if (spellType == "launch") {
     if (target.typeId != "minecraft:item") {
-      target.applyKnockback(player.getViewDirection().x * spellModifier[3], player.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], spellEffect.vertical + spellModifier[0]);
+      target.applyKnockback(player.getViewDirection().x * spellModifier[3], player.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], player.getViewDirection().y * spellModifier[3]);
     }
   }
 }
@@ -792,14 +792,20 @@ export function castPulse(effect, modifier, player) {
   }
   
   spawnParticle(`${getParticle(player)[0] + "pulse"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
-  
-  if (spellType == "potion_effect") {
+
+  if (spellType == "potion_effect" && spellModifier[4] == 1) {
     if (spellEffect.effect != "clear") {
-      player.runCommandAsync(`effect @e[rm=1, r=${spellModifier[2]}] ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} false`);
+      if (spellModifier[4] == 1 || spellEffect.reverseEffect == undefined) {
+        target.runCommandAsync(`effect @e[rm=1, r=${spellModifier[2]}] ${spellEffect.effect} ${spellModifier[0]} ${spellModifier[1]} false`);
+      }
+      if (spellModifier[4] == -1) {
+        target.runCommandAsync(`effect @e[rm=1, r=${spellModifier[2]}] ${spellEffect.reverseEffect} ${spellModifier[0]} ${spellModifier[1]} false`);
+      }
     } else {
-      player.runCommandAsync(`effect @e[rm=1, r=${spellModifier[2]}] ${spellEffect.effect}`);
+      target.runCommandAsync(`effect @e[rm=1, r=${spellModifier[2]}] ${spellEffect.effect}`);
     }
   }
+
   
   if (spellType == "damage") {
     player.runCommandAsync(`damage @e[rm=1, r=${spellModifier[2]}] ${spellEffect.damageValue * spellModifier[3]} ${spellEffect.damageType} entity ${player.name}`);
@@ -855,7 +861,7 @@ export function castPulse(effect, modifier, player) {
     let entities = player.dimension.getEntities({maxDistance: spellModifier[2], excludeNames: [`${player.name}`], location: {x: player.location.x, y: player.location.y, z: player.location.z}});
     for (let entity of entities) {
       if (entity.typeId != "minecraft:item") {
-        entity.applyKnockback(player.getViewDirection().x * spellModifier[4], player.getViewDirection().z * spellModifier[4], spellEffect.horizontal + spellModifier[0], spellEffect.vertical + spellModifier[0]);
+        entity.applyKnockback(player.getViewDirection().x * spellModifier[4], player.getViewDirection().z * spellModifier[4], spellEffect.horizontal + spellModifier[0], player.getViewDirection().y * spellModifier[3]);
       }
     }
   }

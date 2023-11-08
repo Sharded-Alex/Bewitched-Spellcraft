@@ -588,9 +588,14 @@ world.afterEvents.entityHurt.subscribe(data => {
         }
       }
       
-      if (spellType == "potion_effect") {
+      if (spellType == "potion_effect" && spellModifier[3] == 1) {
         if (spellEffect.effect != "clear") {
-          victim.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} false`);
+          if (spellModifier[3] == 1 || spellEffect.reverseEffect == undefined) {
+            victim.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
+          }
+          if (spellModifier[3] == -1) {
+            victim.runCommandAsync(`effect @s ${spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} true`);
+          }
         } else {
           victim.runCommandAsync(`effect @s ${spellEffect.effect}`);
         }
@@ -622,7 +627,7 @@ world.afterEvents.entityHurt.subscribe(data => {
       
       if (spellType == "launch") {
         if (victim.typeId != "minecraft:item") {
-          victim.applyKnockback(damaging.getViewDirection().x * spellModifier[3], damaging.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], spellEffect.vertical + spellModifier[0]);
+          victim.applyKnockback(damaging.getViewDirection().x * spellModifier[3], damaging.getViewDirection().z * spellModifier[3], spellEffect.horizontal + spellModifier[0], damaging.getViewDirection().y * spellModifier[3]);
         }
       }
     }
@@ -634,6 +639,10 @@ world.afterEvents.projectileHitBlock.subscribe(e => {
   let blockFace = e.getBlockHit().face;
   let projectile = e.projectile;
   let shooter = e.source;
+
+  let x = block.location.x;
+  let y = block.location.y;
+  let z = block.location.z;
   
   if (projectile.typeId == "bw:projectile") {
     let findTags = projectile.getTags().find(tag => tag.includes("projSpells:"));

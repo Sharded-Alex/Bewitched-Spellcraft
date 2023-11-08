@@ -149,8 +149,8 @@ export let effectWord = [
     "tag": ["incant:launch"],
     "effectType": "launch",
     "value": {
-      "horizontal": 2,
-      "vertical": 1.5
+      "horizontal": 1,
+      "vertical": 0
     },
     "OE_cost": {
       "operation": "add",
@@ -610,7 +610,7 @@ export let modifierWord = [
       "item": "minecraft:fermented_spider_eye",
       "consumed": true
     },
-    "valid": ["MALBIEVER"],
+    "valid": ["MALBIEVER", "HESAYIC", "MALBASCOR", "CUL", "MALVARYIQ", "SEMAYIQ", "YINÏLIC", "MALVER", "MALBIE", "MALFIEVAR", "REDESI", "XABESI", "ESIEME", "YICYIQ", "MALVAR"],
     "modifierType": "reverse",
     "OE_cost": {
       "operation": "multiply",
