@@ -522,6 +522,15 @@ export const information = {
         }
       },
       {
+        "buttonName": "Malbascor",
+        "buttonIcon": "textures/items/book_normal",
+        "buttonTagRequirements": ["incant:levitation"],
+        "onClick": {
+          "open_form": true,
+          "value": "action.levitate"
+        }
+      },
+      {
         "buttonName": "Redesi",
         "buttonIcon": "textures/items/book_normal",
         "buttonTagRequirements": ["incant:blind"],
@@ -1090,6 +1099,20 @@ export const information = {
   "action.slowness": {
     "title": "Malvar",
     "body": "Concept: Slow\n\nEffect: This incant applies the slowness effect to the target specified by the Form.\n\nModifiers: Tul, Tulver, Tic, Ticver\n\n",
+    "buttons": [
+      {
+        "buttonName": "Back",
+        "buttonIcon": "textures/ui/arrow_dark_left_stretch",
+        "onClick": {
+          "open_form": true,
+          "value": "inc.actions"
+        }
+      }
+    ]
+  },
+  "action.levitate": {
+    "title": "Malbascor",
+    "body": "Concept: Levitate\n\nEffect: This incant applies the levitation effect to the target specified by the Form.\n\nModifiers: Tul, Tulver, Tic, Ticver\n\n",
     "buttons": [
       {
         "buttonName": "Back",

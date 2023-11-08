@@ -24,6 +24,7 @@ tag @s add incant:haste
 tag @s add incant:hunger
 tag @s add incant:speed
 tag @s add incant:leaping
+tag @s add incant:levitation
 tag @s add incant:slow_fall
 tag @s add incant:absorption
 tag @s add incant:water_breathing

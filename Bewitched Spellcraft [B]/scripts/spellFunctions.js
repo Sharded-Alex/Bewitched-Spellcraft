@@ -285,9 +285,14 @@ export function castSelf(effect, modifier, player) {
   
   spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
   
-  if (spellType == "potion_effect") {
+  if (spellType == "potion_effect" && spellModifier[3] == 1) {
     if (spellEffect.effect != "clear") {
-      player.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
+      if (spellModifier[3] == 1 || spellEffect.reverseEffect == undefined) {
+        player.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
+      }
+      if (spellModifier[3] == -1) {
+        player.runCommandAsync(`effect @s ${spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} true`);
+      }
     } else {
       player.runCommandAsync(`effect @s ${spellEffect.effect}`);
     }
@@ -410,11 +415,16 @@ export function castTouch(effect, modifier, player, target) {
   
   spawnParticle(`${getParticle(player)[0] + "hit"}`, target.location.x, target.location.y, target.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
   
-  if (spellType == "potion_effect") {
+  if (spellType == "potion_effect" && spellModifier[3] == 1) {
     if (spellEffect.effect != "clear") {
-      target.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} false`);
+      if (spellModifier[3] == 1 || spellEffect.reverseEffect == undefined) {
+        player.runCommandAsync(`effect @s ${spellEffect.effect} ${spellModifier[1]} ${spellModifier[0]} true`);
+      }
+      if (spellModifier[3] == -1) {
+        player.runCommandAsync(`effect @s ${spellEffect.reverseEffect} ${spellModifier[1]} ${spellModifier[0]} true`);
+      }
     } else {
-      target.runCommandAsync(`effect @s ${spellEffect.effect}`);
+      player.runCommandAsync(`effect @s ${spellEffect.effect}`);
     }
   }
   

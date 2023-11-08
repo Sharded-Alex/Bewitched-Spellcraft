@@ -205,6 +205,17 @@ export const spellTagList = [
     "msg": "§cMalbiever§r has been discovered."
   }, // Jump Boost
   {
+    "tag": "incant:levitation",
+    "xpReq": 20,
+    "condition": {
+      "type": "effect",
+      "value": {
+        "name": "levitation"
+      }
+    },
+    "msg": "§cMalbascor§r has been discovered."
+  }, // Levitation
+  {
     "tag": "incant:slow_fall",
     "xpReq": 12,
     "condition": {
