@@ -18,6 +18,7 @@ tag @s add incant:launch
 tag @s add incant:regeneration
 tag @s add incant:inst_damage
 tag @s add incant:inst_health
+tag @s add incant:resistance
 tag @s add incant:poison
 tag @s add incant:haste
 tag @s add incant:hunger
@@ -26,7 +27,7 @@ tag @s add incant:leaping
 tag @s add incant:slow_fall
 tag @s add incant:absorption
 tag @s add incant:water_breathing
-tag @s add incant:fire_breathing
+tag @s add incant:fire_resistance
 tag @s add incant:blind
 tag @s add incant:invisible
 tag @s add incant:night_sight

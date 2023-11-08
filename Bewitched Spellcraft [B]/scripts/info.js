@@ -585,6 +585,15 @@ export const information = {
         }
       },
       {
+        "buttonName": "Fancul",
+        "buttonIcon": "textures/items/book_normal",
+        "buttonTagRequirements": ["incant:resistance"],
+        "onClick": {
+          "open_form": true,
+          "value": "action.resist_damage"
+        }
+      },
+      {
         "buttonName": "Yinfan",
         "buttonIcon": "textures/items/book_normal",
         "buttonTagRequirements": ["incant:clear_effect"],
@@ -1064,6 +1073,20 @@ export const information = {
       }
     ]
   },
+  "action.resist_damage": {
+    "title": "Fancul",
+    "body": "Concept: Resistance\n\nEffect: This incant applies the resistance effect to the target specified by the Form.\n\nModifiers: Tul, Tic, Tulver\n\n",
+    "buttons": [
+      {
+        "buttonName": "Back",
+        "buttonIcon": "textures/ui/arrow_dark_left_stretch",
+        "onClick": {
+          "open_form": true,
+          "value": "inc.actions"
+        }
+      }
+    ]
+  },
   "action.slowness": {
     "title": "Malvar",
     "body": "Concept: Slow\n\nEffect: This incant applies the slowness effect to the target specified by the Form.\n\nModifiers: Tul, Tulver, Tic, Ticver\n\n",
@@ -1208,7 +1231,7 @@ export const information = {
   },
   "modifier.radius": {
     "title": "Radius Modifiers",
-    "body": "Radius Modifiers multiply or adds the radius of certain Action Incants. However, its most notable use is with Wix. They are as follows:\n\n§lPal§r\nMultiplies a spell's original radius by 2 or increases it by 2.\nRequired Item: String\n\n§lPalver§r\nMultiplies a spell's original radius by 3 or increases it by 3.\nRequired Item: Cobweb\n\n§lPalvereme§r\nMultiplies a spell's original radius by 4 or increases it by 4.\nRequired Item: Dragon Breath\n\n",
+    "body": "Radius Modifiers multiply or adds the radius of certain Action Incants. However, its most notable use is with Wix. They are as follows:\n\n§lPal§r\nMultiplies a spell's original radius by 2 or increases it by 2.\nRequired Item: Gunpowder\n\n§lPalver§r\nMultiplies a spell's original radius by 3 or increases it by 3.\nRequired Item: Cobweb\n\n§lPalvereme§r\nMultiplies a spell's original radius by 4 or increases it by 4.\nRequired Item: Dragon Breath\n\n",
     "buttons": [
       {
         "buttonName": "Back",

@@ -117,6 +117,15 @@ export const spellTagList = [
     },
     "msg": "§cMalbie§r has been discovered."
   }, // Launch
+  {
+    "tag": "incant:resistance",
+    "xpReq": 24,
+    "condition": {
+      "type": "getDamage",
+      "value": EntityDamageCause.magic
+    },
+    "msg": "§cFancul§r has been discovered."
+  }, // Resistance
   
   {
     "tag": "incant:regeneration",
