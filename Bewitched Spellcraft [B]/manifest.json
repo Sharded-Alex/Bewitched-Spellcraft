@@ -4,7 +4,7 @@
         "description": "Leave your legacy in your world as you imbue and explore your arcane prowess.",
         "name": "Bewitched Spellcraft",
         "uuid": "bd8723a6-77b6-45e6-ac54-6cb6492353ff",
-        "version": [ 1, 0, 2 ],
+        "version": [ 1, 0, 3 ],
         "min_engine_version": [ 1, 20, 30 ]
     },
     "modules": [
@@ -12,7 +12,7 @@
             "description": "",
             "type": "data",
             "uuid": "443e8921-ded1-4353-9bfc-0abfd173e3f1",
-            "version": [1, 0, 2]
+            "version": [1, 0, 3]
         },
     		{
     			"uuid": "37385aaa-2af4-4a30-87c8-3c784ea6d092",
@@ -25,7 +25,7 @@
     "dependencies": [
         {
             "uuid": "8100df1a-6a14-4284-b445-c8d3d3a32caa",
-            "version": [1, 0, 2]
+            "version": [1, 0, 3]
         },
     		{
     			"module_name": "@minecraft/server-ui",
