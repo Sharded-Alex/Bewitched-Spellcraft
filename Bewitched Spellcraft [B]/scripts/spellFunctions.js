@@ -967,7 +967,14 @@ export function processSpell(array, playerName) {
 export function addSpellName(name, player) {
   let inventory = player.getComponent("inventory").container;
   let item = inventory.getItem(player.selectedSlot);
-  item.nameTag = `${name}`; 
-  
+  item.nameTag = `${name}`;
+
   inventory.setItem(player.selectedSlot, item);
+  // Popup Messages for Imbuement Success
+  if (item.typeId == "bw:baked_rune") {
+    player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§6${item.amount} §aBaked Rune(s) was inscribed with ${name}.§r\"}]}`);
+  }
+  if (item.typeId == "bw:inscribed_spell_journal") {
+    player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§a${name} was successfully inscribed.§r\"}]}`);
+  }
 }

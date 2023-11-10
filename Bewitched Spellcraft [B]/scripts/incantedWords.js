@@ -2,13 +2,32 @@
 import {world, Vector, EntityHealthComponent} from "@minecraft/server";
 import {ModalFormData} from "@minecraft/server-ui";
 import {effectWord, modifierWord} from "./spellPiece.js";
-import {getParticle, getProjParticle, spawnParticle, getFace, getDirection, calc_OE, reduceDurability, checkValidity, checkItems, getDuration, castSelf, castTouch, castTouchBlock, castPulse, castProj, processSpell, addSpellName} from "./spellFunctions.js";
+import {getFace, getDirection, calc_OE, reduceDurability, checkValidity, getDuration, castSelf, castTouch, castTouchBlock, castPulse, castProj, processSpell, addSpellName} from "./spellFunctions.js";
 
+// Converts a number into the corresponding Xp Level
+function getXp(cost) {
+  let experience = 0;
+  if (cost < 352) {
+    experience = Math.round(Math.sqrt(cost + 9) - 3);
+  }
+  if (cost > 352 && cost < 1508) {
+    experience = Math.round((81/10) + Math.sqrt(2/5 * (cost - 7839/40)));
+  }
+  if (cost > 1507) {
+    experience = Math.round((325/18) + Math.sqrt(2/9 * (cost - 54215/72)));
+  }
+  if (experience <= 0) {
+    experience = 1;
+  }
+  return experience;
+}
 
-// Cast Spell
+// Imbue Spell on Runes/Journal
 world.afterEvents.chatSend.subscribe(e => {
   let player = e.sender;
   let msg = e.message;
+
+  // Get the item the player is holding
   const inv = player.getComponent("inventory").container;
   const wand = inv.getItem(player.selectedSlot);
   
@@ -21,66 +40,41 @@ world.afterEvents.chatSend.subscribe(e => {
     let wordArray = fullSpell.split(' ');
     let counter = 0;
     
-    // Add new spell lore to the foci
+    /* Add new spell lore to the foci */
+
+    // Filter out the ET word
+    let runeArray = wordArray.filter((e)=> e != "ET");
+    // Turn each incant into numbers and calculate to get spell cost
+    let runeCost = calc_OE(runeArray);
+    // Convert the spell cost into experience
+    let oE = getXp(runeCost);
     if (wand.typeId == "bw:baked_rune") {
-      let runeArray = wordArray.filter((e)=> e != "ET");
-      let runeCost = calc_OE(runeArray);
-      let oE;
-      if (runeCost < 352) {
-        oE = Math.round(Math.sqrt(runeCost + 9) - 3);
-      }
-      if (runeCost > 352 && runeCost < 1508) {
-        oE = Math.round((81/10) + Math.sqrt(2/5 * (runeCost - 7839/40)));
-      }
-      if (runeCost > 1507) {
-        oE = Math.round((325/18) + Math.sqrt(2/9 * (runeCost - 54215/72)));
-      }
-      if (oE == 0) {
-        oE = 1;
-      }
-      
-      if (player.level >= oE) {
-        player.addLevels(-oE);
-        
-        for(let i = 0; i < 10; i++){
-          processSpell(wordArray.slice(i+counter, i+counter+4), player.name);
-          if(wordArray[i+counter+4] != "ET"){ break; }
-          counter += 4;
-        }
-        player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§gYou've successfully inscribed ${wand.amount} Baked Rune(s).§r\"}]}`);
-      } else {
-        player.runCommandAsync("tellraw @s {\"rawtext\": [{\"text\": \"§aYou have insufficient XP. This may be due to attempting to inscribe too many Baked Runes at once.§r\"}]}");
-      }
+      oE * wand.amount;
     }
-    
-    if (wand.typeId == "bw:empty_spell_journal") {
-      let runeArray = wordArray.filter((e)=> e != "ET");
-      let runeCost = calc_OE(runeArray);
-      let oE;
-      if (runeCost < 352) {
-        oE = Math.round(Math.sqrt(runeCost + 9) - 3);
-      }
-      if (runeCost > 352 && runeCost < 1508) {
-        oE = Math.round((81/10) + Math.sqrt(2/5 * (runeCost - 7839/40)));
-      }
-      if (runeCost > 1507) {
-        oE = Math.round((325/18) + Math.sqrt(2/9 * (runeCost - 54215/72)));
-      }
-      if (oE == 0) {
-        oE = 1;
-      }
-      
-      if (player.level >= oE) {
+
+    // Succeed if level is higher than spell cost
+    if (player.level >= oE) {
+      if (wand.typeId == "bw:baked_rune") {
+        oE = Math.ceil(oE/5);
         player.addLevels(-oE);
-        
-        for(let i = 0; i < 10; i++){
-          processSpell(wordArray.slice(i+counter, i+counter+4), player.name);
-          if(wordArray[i+counter+4] != "ET"){ break; }
-          counter += 4;
-        }
-        player.runCommandAsync("tellraw @s {\"rawtext\": [{\"text\": \"§aYour spell was successfully inscribed.§r\"}]}");
-      } else {
-        player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§aYou have insufficient XP. You need ${oE - player.level} more levels.§r\"}]}`);
+      }
+      if (wand.typeId == "bw:empty_spell_journal") {
+        player.addLevels(-oE);
+      }
+      for (let i = 0; i < 10; i++){
+        // Process current spell line and convert it to item lore
+        processSpell(wordArray.slice(i+counter, i+counter+4), player.name);
+        if (wordArray[i+counter+4] != "ET"){ break; }
+        // Progress to next spell line
+        counter += 4;
+      }
+    } else {
+      // Runs if the above check fails
+      if (wand.typeId == "bw:baked_rune") {
+        player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§aInsufficient Xp. You need ${Math.ceil(oE/5) - player.level} more level(s).§r\"}]}`);
+      }
+      if (wand.typeId == "bw:empty_spell_journal") {
+        player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§aInsufficient Xp. You need ${oE - player.level} more level(s).§r\"}]}`);
       }
     }
   }
@@ -89,10 +83,12 @@ world.afterEvents.chatSend.subscribe(e => {
 // Spell Activations
 world.afterEvents.itemUse.subscribe(cast => {
   let player = cast.source;
+  // Use itemUse to get the item in the mainhand
   let item = cast.itemStack;
+  // Get the item in the offhand
   let offhand = player.getComponent("equippable").getEquipment("Offhand");
   
-  // Get Lore from source casters
+  // Get Item Lores (mainH.)
   let selfSpell;
   if (item.typeId == "bw:inscribed_rune") {
     selfSpell = item.getLore();
@@ -101,13 +97,13 @@ world.afterEvents.itemUse.subscribe(cast => {
     selfSpell = item.getLore();
   }
   
-  // Get Lore from focus casters
+  // Get Item Lores (offH.)
   let wandSelfSpell;
   if (item.hasTag("bw:occult_focus") && offhand.typeId == "bw:spell_journal") {
     wandSelfSpell = offhand.getLore();
   }
   
-  // Spell Cost
+  // Say Spell Journal SpellCost
   if (item.typeId == "bw:spell_journal" && item.nameTag != undefined) {
     player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"Spell Name: ${item.nameTag}\nSpell Cost: ${calc_OE(selfSpell.join(" + ").split(' + '))}\"}]}`);
   }
