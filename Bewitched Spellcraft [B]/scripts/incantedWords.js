@@ -41,7 +41,7 @@ world.afterEvents.chatSend.subscribe(e => {
     let formWord = fullSpell.split(' ')[0];
 
     //Turn rest of msg into an array of words and loop it
-    let wordArray = fullSpell.split(' ').slice(1, wordArray.length);
+    let wordArray = fullSpell.split(' ').slice(1, formWord.length);
     let counter = 0;
     
     /* Add new spell lore to the foci */
@@ -61,13 +61,22 @@ world.afterEvents.chatSend.subscribe(e => {
       if (wand.typeId == "bw:baked_rune") {
         oE = Math.ceil(oE/5);
         player.addLevels(-oE);
-      }
+        }
       if (wand.typeId == "bw:empty_spell_journal") {
         player.addLevels(-oE);
       }
       for (let i = 0; i < 10; i++){
-        // Process current spell line and convert it to item lore
-        processSpell(formWord, wordArray.slice(i+counter, i+counter+3), player.name);
+        // Process current spell line and convert it to item lore (color compatible)
+        let yisSpell;
+        // Check for colors and move them into their own thing
+        // Change the wordArray and formWord to accomodate Yis
+        if (formWord == "YIS") {
+          yisSpell = fullSpell.split(" ").slice(0, 3);
+          wordArray = fullSpell.split(" ").slice(6, fullSpell.split(' ').length);
+          formWord = fullSpell.split(" ")[5];
+        }
+        
+        processSpell(yisSpell, formWord, wordArray.slice(i+counter, i+counter+3), player.name);
         if (wordArray[i+counter+3] != "ET"){ break; }
         // Progress to next spell line
         counter += 3;

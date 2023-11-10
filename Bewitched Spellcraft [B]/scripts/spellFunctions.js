@@ -891,7 +891,7 @@ export function castProj(effectArrays, player, appArray) {
   proj.runCommandAsync(`tag @s add "projSpells:${fullSpell}"`);
 }
 
-export function processSpell(form, array, playerName) {
+export function processSpell(appearance, form, array, playerName) {
   const plr = world.getPlayers({name: playerName})[0];
   const inv = plr.getComponent("inventory").container;
   const items = inv.getItem(plr.selectedSlot);
@@ -941,13 +941,13 @@ export function processSpell(form, array, playerName) {
   }
   
   let lore = items.getLore();
-  if (effectName != "YIS") {
-    lore.push(`${effectName} + ${typeName} + ${modifierName[0]} + ${modifierName[1]}`);
+    if (appearance != undefined) {
+    lore.push(`${appearance[0]} + ${appearance[1]} + ${appearance[2]} + ${appearance[3]}`);
   }
-  if (effectName == "YIS") {
+  if (appearance == undefined) {
     lore.unshift(`${effectName} + ${typeName} + ${modifierName[0]} + ${modifierName[1]}`);
   }
-  
+
   let newWand;
   if (items.typeId == "bw:empty_spell_journal" || items.typeId == "bw:spell_journal") {
     newWand = new ItemStack("bw:spell_journal", 1);
