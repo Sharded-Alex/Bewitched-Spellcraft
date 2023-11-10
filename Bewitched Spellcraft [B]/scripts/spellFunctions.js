@@ -891,14 +891,17 @@ export function castProj(effectArrays, player, appArray) {
   proj.runCommandAsync(`tag @s add "projSpells:${fullSpell}"`);
 }
 
-export function processSpell(array, playerName) {
+export function processSpell(form, array, playerName) {
   const plr = world.getPlayers({name: playerName})[0];
   const inv = plr.getComponent("inventory").container;
   const items = inv.getItem(plr.selectedSlot);
   
-  let effectName = array[0];
-  let typeName = array [1];
-  let modifierName = [array[2], array[3]];
+  // Get all the words of the spell
+  let effectName = form;
+  let typeName = array[0];
+  let modifierName = [array[1], array[2]];
+
+  // Check for player qualifications
   for (let type of typeWord) {
     if (type.word == effectName && !checkPlayerTags(type.tag, plr)) {
       effectName = '???';
@@ -910,24 +913,17 @@ export function processSpell(array, playerName) {
     }
   }
   for (let modifier of modifierWord) {
-    if (modifier.word == modifierName[0]) {
-      if (checkItems(plr, modifier.required.item)) {
-        if (modifier.required.consumed == true) {
-          let reqItem = modifier.required.item.replace("minecraft:", "");
-          plr.runCommandAsync(`clear @s ${reqItem} 0 1`);
+    for (let v = 0; v < modifierName.length; v++) {
+      if (modifier.word == modifierName[v]) {
+        // Check for necessary items and remove them when found
+        if (checkItems(plr, modifier.required.item)) {
+          if (modifier.required.consumed == true) {
+            let reqItem = modifier.required.item.replace("minecraft:", "");
+            plr.runCommandAsync(`clear @s ${reqItem} 0 1`);
+          }
+        } else {
+          modifierName[v] = '???';
         }
-      } else {
-        modifierName[0] = '???';
-      }
-    }
-    if (modifier.word == modifierName[1]) {
-      if (checkItems(plr, modifier.required.item)) {
-        if (modifier.required.consumed == true) {
-          let reqItem = modifier.required.item.replace("minecraft:", "");
-          plr.runCommandAsync(`clear @s ${reqItem} 0 1`);
-        }
-      } else {
-        modifierName[1] = '???';
       }
     }
   }

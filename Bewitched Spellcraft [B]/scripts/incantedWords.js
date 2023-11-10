@@ -36,8 +36,12 @@ world.afterEvents.chatSend.subscribe(e => {
     // seperate the prefix from the msg
     // and puts all the words into lower case
     let fullSpell = msg.slice(1, msg.length + 1).toUpperCase();
-    //Turn msg into an array of words and loop through it
-    let wordArray = fullSpell.split(' ');
+
+    // Get spell form
+    let formWord = fullSpell.split(' ')[0];
+
+    //Turn rest of msg into an array of words and loop it
+    let wordArray = fullSpell.split(' ').slice(1, wordArray.length);
     let counter = 0;
     
     /* Add new spell lore to the foci */
@@ -63,10 +67,10 @@ world.afterEvents.chatSend.subscribe(e => {
       }
       for (let i = 0; i < 10; i++){
         // Process current spell line and convert it to item lore
-        processSpell(wordArray.slice(i+counter, i+counter+4), player.name);
-        if (wordArray[i+counter+4] != "ET"){ break; }
+        processSpell(formWord, wordArray.slice(i+counter, i+counter+3), player.name);
+        if (wordArray[i+counter+3] != "ET"){ break; }
         // Progress to next spell line
-        counter += 4;
+        counter += 3;
       }
     } else {
       // Runs if the above check fails
