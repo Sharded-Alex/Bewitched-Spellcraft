@@ -3,6 +3,7 @@ import {typeWord, effectWord, modifierWord} from "./spellPiece.js";
 import {checkPlayerTags} from "./Main.js"
 
 // My Functions
+// Gets the particle on a spell
 export function getParticle(player) {
   const inventory = player.getComponent("inventory").container;
   const item = inventory.getItem(player.selectedSlot);
@@ -38,6 +39,7 @@ export function getParticle(player) {
   
   return [returnedParticle, returnedColor];
 }
+// Gets the particle assigned to a spell projectile
 export function getProjParticle(particle, color) {
     let returnedParticle = "bw:wispy_particle_";
     let returnedColor = [Math.random(), Math.random(), Math.random()];
@@ -60,6 +62,7 @@ export function getProjParticle(particle, color) {
     
     return [returnedParticle, returnedColor];
 }
+// Uses the info gathered from above functions to spawn the right particles
 export function spawnParticle(particle, xLoc, yLoc, zLoc, dimension, r, g, b) {
   const customColor = new MolangVariableMap();
   customColor.setColorRGB('variable.color', {red: r, green: g, blue: b, alpha: 1});
@@ -67,6 +70,7 @@ export function spawnParticle(particle, xLoc, yLoc, zLoc, dimension, r, g, b) {
   world.getDimension(dimension).spawnParticle(`${particle}`, {x: xLoc, y: yLoc, z: zLoc}, customColor);
 }
 
+// Gets the face of the block hit (top, bottom, etc)
 export function getFace(blockFace) {
   let vector;
   switch (blockFace) {
@@ -94,6 +98,7 @@ export function getFace(blockFace) {
   }
   return vector;
 }
+// Gets the direction the player is facing based on rotation
 export function getDirection(rotation) {
   let direction;
   let type;
@@ -118,6 +123,7 @@ export function getDirection(rotation) {
   }
   return [direction, type];
 }
+// Calculates a spell's cost based on the incants used
 export function calc_OE(spellArray) {
   let numList = [];
   let oppList = [];
@@ -164,6 +170,7 @@ export function calc_OE(spellArray) {
   }
   return Math.ceil(total);
 }
+// Lowers the durability of an item
 export function reduceDurability(player, inventory, item, currentDurability, amount) {
   if (item.getComponent("durability").maxDurability > currentDurability) {
     let newItem = new ItemStack(item.typeId, 1);
@@ -174,6 +181,7 @@ export function reduceDurability(player, inventory, item, currentDurability, amo
     inventory.setItem(player.selectedSlot, newItem);
   }
 }
+// Check ho valid a spell is
 export function checkValidity(spellArray) {
   for (let word of spellArray) {
     if (!([...typeWord, ...effectWord, ...modifierWord].map((e) => e.word).includes(word))) {
@@ -182,6 +190,7 @@ export function checkValidity(spellArray) {
   }
   return true;
 }
+// Check for Modifier req. items
 export function checkItems(player, item) {
   let inventory = player.getComponent("inventory").container;
   if (item == "none") {
@@ -194,6 +203,7 @@ export function checkItems(player, item) {
   }
   return false;
 }
+// Get the duration of effect based Actions
 export function getDuration(effect) {
   let value = 0;
   for (let eft of effectWord) {
@@ -204,6 +214,7 @@ export function getDuration(effect) {
   return value;
 }
 
+// Triggers the spell to affect the caster
 export function castSelf(effect, modifier, player) {
   let isSpell = false;
   let spellType;
@@ -335,6 +346,7 @@ export function castSelf(effect, modifier, player) {
     player.applyKnockback(player.getViewDirection().x * spellModifier[3], player.getViewDirection().z * spellModifier[3], spellEffect.horizontal * spellModifier[0], player.getViewDirection().y * spellModifier[0] * spellModifier[3]);
   }
 }
+// Triggers the spell to affect hit entity
 export function castTouch(effect, modifier, player, target) {
   let isSpell = false;
   let spellType;
@@ -468,6 +480,7 @@ export function castTouch(effect, modifier, player, target) {
     }
   }
 }
+// Triggers the spell to affect hit blocks
 export function castTouchBlock(effect, modifier, player, block, blockFace) {
   let x = block.location.x;
   let y = block.location.y;
@@ -534,7 +547,6 @@ export function castTouchBlock(effect, modifier, player, block, blockFace) {
     }
   }
   
-  spawnParticle(`${getParticle(player)[0] + "hit"}`, x, y, z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
   
   if (spellType == "break") {
     let coords = [
@@ -711,6 +723,7 @@ export function castTouchBlock(effect, modifier, player, block, blockFace) {
     block.dimension.createExplosion({x: x, y: y,  z: z}, 3 + (spellModifier[0] + 1), {breaksBlocks: spellModifier[3][0] ? true : spellEffect.destructive, causesFire: spellModifier[3][0] ? true : spellEffect.spawnFire, allowUnderwater: spellModifier[3][1] ? true : spellEffect.underWater});
   }
 }
+// Triggers the spell to affect entities in an area
 export function castPulse(effect, modifier, player) {
   let isSpell = false;
   let spellType;
@@ -792,8 +805,6 @@ export function castPulse(effect, modifier, player) {
       }
     }
   }
-  
-  spawnParticle(`${getParticle(player)[0] + "pulse"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
 
   if (spellType == "potion_effect") {
     let bool = spellModifier[4] == 1 ? true : false;
@@ -869,6 +880,7 @@ export function castPulse(effect, modifier, player) {
   }
 }
 
+// Triggers the spell as a projectile spell
 export function castProj(effectArrays, player, appArray) {
   const proj = world.getDimension(`${player.dimension.id}`).spawnEntity("bw:projectile", {x: player.location.x + player.getViewDirection().x * 2, y: player.location.y + 0.5 * 2, z: player.location.z + player.getViewDirection().z * 2});
   
@@ -891,6 +903,8 @@ export function castProj(effectArrays, player, appArray) {
   proj.runCommandAsync(`tag @s add "projSpells:${fullSpell}"`);
 }
 
+// Where all the spell processing takes place!
+// Attaches the spell to the spell item
 export function processSpell(appearance, form, array, playerName) {
   const plr = world.getPlayers({name: playerName})[0];
   const inv = plr.getComponent("inventory").container;
@@ -960,6 +974,8 @@ export function processSpell(appearance, form, array, playerName) {
   inv.setItem(plr.selectedSlot, newWand);
   return;
 }
+// The final process in spell imbuement: spell naming
+// Genuinely just names the spell. Can be renamed in an anvil
 export function addSpellName(name, player) {
   let inventory = player.getComponent("inventory").container;
   let item = inventory.getItem(player.selectedSlot);

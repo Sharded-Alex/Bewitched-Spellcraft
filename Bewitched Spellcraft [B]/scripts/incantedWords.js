@@ -149,18 +149,21 @@ world.afterEvents.itemUse.subscribe(cast => {
   }
   
   // Make sure it DOES NOT have Touch
-  if (selfSpell != undefined && item.nameTag != undefined) {
-    for (let spell of selfSpell) {
-      if (spell.includes("GEL")) {
-        return;
+  if (item.nameTag != undefined) {
+    if (selfSpell != undefined) {
+      for (let spell of selfSpell) {
+        let selfArray = spell.split(" + ");
+        if (selfArray.includes("GEL")) {
+          return;
+        }
       }
     }
-  }
-  
-  if (wandSelfSpell != undefined && item.nameTag != undefined) {
-    for (let spell of wandSelfSpell) {
-      if (spell.includes("GEL")) {
-        return;
+    if (wandSelfSpell != undefined) {
+      for (let spell of wandSelfSpell) {
+        let wandSelfArray = spell.split(" + ");
+        if (wandSelfArray.includes("GEL")) {
+          return;
+        }
       }
     }
   }
@@ -171,13 +174,19 @@ world.afterEvents.itemUse.subscribe(cast => {
     if (checkValidity(selfSpell.join(" + ").split(' + ')) && !selfSpell.includes("GEL ")) {
       // Destroy Spellrune
       player.runCommandAsync(`clear @s ${item.typeId} 0 1`);
-        
+
+      // Wait for proj values 
       let projectileArray = [];
+
+      // Test if particle is run
+      let runCast = [0, 0];
+      // Process spells on item
       for (let i = 0; i < 10; i++) {
         let spells = selfSpell;
         let spellString = "" + spells[0];
         let spellWords = spellString.split(' + ', 4);
         
+        // Assign each incant to their respective variables
         let type = spellWords[0];
         let effect = spellWords[1];
         let modifier = [spellWords[2], spellWords[3]];
@@ -188,9 +197,17 @@ world.afterEvents.itemUse.subscribe(cast => {
         switch (type) {
           case "ETE":
             castSelf(effect, modifier, player);
+            if (runCast[0] == 0) {
+              spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+              runCast[0] = 1;
+            }
             break;
           case "WIX":
             castPulse(effect, modifier, player);
+            if (runCast[1] == 0) {
+              spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+              runCast[1] = 1;
+            }
             break;
         }
         spells.shift();
@@ -225,12 +242,14 @@ world.afterEvents.itemUse.subscribe(cast => {
         
         reduceDurability(player, inventory, heldItem, heldItem.getComponent("durability").damage, spellCost);
         
+        let runCast = [0, 0];
         let projectileArray = [];
         for (let i = 0; i < 10; i++) {
           let spells = wandSelfSpell;
           let spellString = "" + spells[0];
           let spellWords = spellString.split(' + ', 4);
-          
+
+          // Assign each incant to their respective variables
           let type = spellWords[0];
           let effect = spellWords[1];
           let modifier = [spellWords[2], spellWords[3]];
@@ -238,12 +257,21 @@ world.afterEvents.itemUse.subscribe(cast => {
             projectileArray.push([effect, modifier[0], modifier[1]]);
           }
           
+          // Trigger effects based on form 
           switch (type) {
             case "ETE":
               castSelf(effect, modifier, player);
+              if (runCast[0] == 0) {
+                spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+                runCast[0] = 1;
+              }
               break;
             case "WIX":
               castPulse(effect, modifier, player);
+              if (runCast[1] == 0) {
+                spawnParticle(`${getParticle(player)[0] + "pulse"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+                runCast[1] == 1;
+              }
               break;
           }
           spells.shift();
@@ -266,41 +294,46 @@ world.afterEvents.itemUse.subscribe(cast => {
   }
 });
 
+// Comments are similar to the above function
 world.afterEvents.entityHitEntity.subscribe(e => {
   let entity = e.hitEntity;
   let player = e.damagingEntity;
   
   if (player.typeId == "minecraft:player") {
+    // Get items
     const inv = player.getComponent("inventory").container;
     const item = inv.getItem(player.selectedSlot);
     let offhand = player.getComponent("equippable").getEquipment("Offhand");
   
-    // Get Lore from source casters
+    // Get Lore from runes
     let touchSpell;
     if (item != undefined && item.typeId == "bw:inscribed_rune") {
       touchSpell = item.getLore();
     }
-    if (item != undefined && item.typeId == "bw:spell_journal") {
-      touchSpell = item.getLore();
-    }
     
-    // Get Lore from focus casters
+    // Get Lore from focus casters (wands)
     let wandTouchSpell;
     if (item != undefined && item.hasTag("bw:occult_focus") && offhand.typeId == "bw:spell_journal") {
       wandTouchSpell = offhand.getLore();
     }
     
     // Ensure that this is Touch
-    if (touchSpell != undefined && item.nameTag != undefined) {
-      let wholeArray = touchSpell.join(" + ").split(' + ');
-      if (!wholeArray.includes('GEL')) {
-        return;
+    if (item.nameTag != undefined) {
+      if (touchSpell != undefined) {
+        for (let spell of touchSpell) {
+          let touchArray = spell.split(" + ");
+          if (touchArray.includes("GEL")) {
+            return;
+          }
+        }
       }
-    }
-    if (wandTouchSpell != undefined && item.nameTag != undefined) {
-      let wholeArray = wandTouchSpell.join(" + ").split(' + ');
-      if (!wholeArray.includes('GEL')) {
-        return;
+      if (wandTouchSpell != undefined) {
+        for (let spell of wandTouchSpell) {
+          let wandTouchArray = spell.split(" + ");
+          if (wandTouchArray.includes("GEL")) {
+            return;
+          }
+        }
       }
     }
     
@@ -308,9 +341,11 @@ world.afterEvents.entityHitEntity.subscribe(e => {
     if (item != undefined && item.typeId == "bw:inscribed_rune" && item.nameTag != undefined) {
       // Checks if spell is valid
       if (checkValidity(touchSpell.join(" + ").split(' + '))) {
-        // Decrease player OE
+        // Destroy rune
         player.runCommandAsync(`clear @s ${item.typeId} 0 1`);
         
+        // Test if particle is run
+        let runCast = false;
         for (let i = 0; i < 10; i++) {
           let spells = touchSpell;
           let spellString = "" + spells[0];
@@ -321,14 +356,12 @@ world.afterEvents.entityHitEntity.subscribe(e => {
           let modifier = [spellWords[2], spellWords[3]];
           
           switch (type) {
-            case "ETE":
-              castSelf(effect, modifier, player);
-              break;
             case "GEL":
               castTouch(effect, modifier, player, entity);
-              break;
-            case "WIX":
-              castPulse(effect, modifier, player);
+              if (runCast == false) {
+                spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+                runCast = true;
+              }
               break;
           }
           spells.shift();
@@ -337,16 +370,18 @@ world.afterEvents.entityHitEntity.subscribe(e => {
         player.dimension.createExplosion({x: player.location.x, y: player.location.y,  z: player.location.z}, 1, {breaksBlocks: false, causesFire: false, allowUnderwater: true});
       }
     }
-    
+
+    // Pretty identical to the above code
     if (item != undefined && offhand != undefined && item.hasTag('bw:occult_focus') && offhand.typeId == "bw:spell_journal" && offhand.nameTag != undefined) {
       // Checks if spell is valid
       if (checkValidity(wandTouchSpell.join(" + ").split(' + '))) {
         
-        // Calculates spellcosts
+        // Get wand durability
         let focusOE = item.getComponent("durability").maxDurability - item.getComponent("durability").damage;
-        
+        // Get the cost of the spell
         let spellCost = calc_OE(wandTouchSpell.join(" + ").split(' + '));
         
+        // Compare the durability and spellcost
         if (focusOE >= spellCost) {
           // Decrease focus durability
           let inventory = player.getComponent("inventory").container;
@@ -354,6 +389,7 @@ world.afterEvents.entityHitEntity.subscribe(e => {
           
           reduceDurability(player, inventory, heldItem, heldItem.getComponent("durability").damage, spellCost);
           
+          let runCast = false;
           for (let i = 0; i < 10; i++) {
             let spells = wandTouchSpell;
             let spellString = "" + spells[0];
@@ -364,14 +400,12 @@ world.afterEvents.entityHitEntity.subscribe(e => {
             let modifier = [spellWords[2], spellWords[3]];
             
             switch (type) {
-              case "ETE":
-                castSelf(effect, modifier, player);
-                break;
               case "GEL":
                 castTouch(effect, modifier, player, entity);
-                break;
-              case "WIX":
-                castPulse(effect, modifier, player);
+                if (runCast == false) {
+                  spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+                  runCast = true;
+                }
                 break;
             }
             spells.shift();
@@ -387,17 +421,19 @@ world.afterEvents.entityHitEntity.subscribe(e => {
   }
 });
 
+// Same as above function
 world.afterEvents.entityHitBlock.subscribe(e => {
   let block = e.hitBlock;
   let blockFace = e.blockFace;
   let player = e.damagingEntity;
   
   if (player.typeId == "minecraft:player") {
+    // Get items
     const inv = player.getComponent("inventory").container;
     const item = inv.getItem(player.selectedSlot);
     let offhand = player.getComponent("equippable").getEquipment("Offhand");
   
-    // Get Lore from source casters
+    // Get Lore from runes
     let touchSpell;
     if (item != undefined && item.typeId == "bw:inscribed_rune") {
       touchSpell = item.getLore();
@@ -406,23 +442,29 @@ world.afterEvents.entityHitBlock.subscribe(e => {
       touchSpell = item.getLore();
     }
     
-    // Get Lore from focus casters
+    // Get Lore from focus casters (wands)
     let wandTouchSpell;
     if (item != undefined && item.hasTag("bw:occult_focus") && offhand.typeId == "bw:spell_journal") {
       wandTouchSpell = offhand.getLore();
     }
     
     // Ensure that this is Touch
-    if (touchSpell != undefined && item.nameTag != undefined) {
-      let wholeArray = touchSpell.join(" + ").split(' + ');
-      if (!wholeArray.includes('GEL')) {
-        return;
+    if (item.nameTag != undefined) {
+      if (touchSpell != undefined) {
+        for (let spell of touchSpell) {
+          let touchArray = spell.split(" + ");
+          if (touchArray.includes("GEL")) {
+            return;
+          }
+        }
       }
-    }
-    if (wandTouchSpell != undefined && item.nameTag != undefined) {
-      let wholeArray = wandTouchSpell.join(" + ").split(' + ');
-      if (!wholeArray.includes('GEL')) {
-        return;
+      if (wandTouchSpell != undefined) {
+        for (let spell of wandTouchSpell) {
+          let wandTouchArray = spell.split(" + ");
+          if (wandTouchArray.includes("GEL")) {
+            return;
+          }
+        }
       }
     }
     
@@ -431,9 +473,11 @@ world.afterEvents.entityHitBlock.subscribe(e => {
       // Checks if spell is valid
       if (checkValidity(touchSpell.join(" + ").split(' + '))) {
         
-        // Decrease player OE
+        // Clear rune
         player.runCommandAsync(`clear @s ${item.typeId} 0 1`);
         
+        // Check if the particle was run
+        let runCast = false;
         for (let i = 0; i < 10; i++) {
           let spells = touchSpell;
           let spellString = "" + spells[0];
@@ -444,14 +488,12 @@ world.afterEvents.entityHitBlock.subscribe(e => {
           let modifier = [spellWords[2], spellWords[3]];
           
           switch (type) {
-            case "ETE":
-              castSelf(effect, modifier, player);
-              break;
             case "GEL":
               castTouchBlock(effect, modifier, player, block, blockFace);
-              break;
-            case "WIX":
-              castPulse(effect, modifier, player);
+              if (runCast == false) {
+                spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+                runCast = true;
+              }
               break;
           }
           spells.shift();
@@ -477,6 +519,7 @@ world.afterEvents.entityHitBlock.subscribe(e => {
           
           reduceDurability(player, inventory, heldItem, heldItem.getComponent("durability").damage, spellCost);
           
+          let runCast = false;
           for (let i = 0; i < 10; i++) {
             let spells = wandTouchSpell;
             let spellString = "" + spells[0];
@@ -487,14 +530,12 @@ world.afterEvents.entityHitBlock.subscribe(e => {
             let modifier = [spellWords[2], spellWords[3]];
             
             switch (type) {
-              case "ETE":
-                castSelf(effect, modifier, player);
-                break;
               case "GEL":
                 castTouchBlock(effect, modifier, player, block, blockFace);
-                break;
-              case "WIX":
-                castPulse(effect, modifier, player);
+                if (runCast == false) {
+                  spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
+                  runCast = true;
+                }
                 break;
             }
             spells.shift();
