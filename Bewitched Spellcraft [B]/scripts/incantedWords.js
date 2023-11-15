@@ -1,8 +1,9 @@
 /* jshint maxerr: 10000 */
 import {world, Vector, EntityHealthComponent} from "@minecraft/server";
 import {ModalFormData} from "@minecraft/server-ui";
-import {effectWord, modifierWord} from "./spellPiece.js";
-import {getFace, getDirection, calc_OE, reduceDurability, checkValidity, getDuration, castSelf, castTouch, castTouchBlock, castPulse, castProj, processSpell, addSpellName} from "./spellFunctions.js";
+import {checkPlayerTags} from "./Main.js";
+import {typeWord, effectWord, modifierWord} from "./spellPiece.js";
+import {getParticle, getProjParticle, spawnParticle, getFace, getDirection, calc_OE, reduceDurability, checkValidity, checkItems, getDuration, castSelf, castTouch, castTouchBlock, castPulse, castProj, processSpell, addSpellName} from "./spellFunctions.js";
 
 // Converts a number into the corresponding Xp Level
 function getXp(cost) {
@@ -32,17 +33,14 @@ world.afterEvents.chatSend.subscribe(e => {
   const wand = inv.getItem(player.selectedSlot);
   
   const prefix = ":";
+  // Spell Imbuement
   if (msg.startsWith(prefix) && (wand.typeId == "bw:empty_spell_journal" || wand.typeId == "bw:baked_rune")) {
     // seperate the prefix from the msg
     // and puts all the words into lower case
     let fullSpell = msg.slice(1, msg.length + 1).toUpperCase();
 
-    // Get spell form
-    let formWord = fullSpell.split(' ')[0];
-
     //Turn rest of msg into an array of words and loop it
-    let wordArray = fullSpell.split(' ').slice(1, formWord.length);
-    let counter = 0;
+    let wordArray = fullSpell.split(' ');
     
     /* Add new spell lore to the foci */
 
@@ -65,21 +63,14 @@ world.afterEvents.chatSend.subscribe(e => {
       if (wand.typeId == "bw:empty_spell_journal") {
         player.addLevels(-oE);
       }
-      for (let i = 0; i < 10; i++){
-        // Process current spell line and convert it to item lore (color compatible)
-        let yisSpell;
-        // Check for colors and move them into their own thing
-        // Change the wordArray and formWord to accomodate Yis
-        if (formWord == "YIS") {
-          yisSpell = fullSpell.split(" ").slice(0, 3);
-          wordArray = fullSpell.split(" ").slice(6, fullSpell.split(' ').length);
-          formWord = fullSpell.split(" ")[5];
+  
+      let spellList = fullSpell.replaceAll(' ET ', '-').split('-', 9);
+      for (let i = 0; i < spellList.length; i++){
+        let spell = spellList[i].split(' ');
+        if (spell.length > 4) {
+          spell.slice(0, 4);
         }
-        
-        processSpell(yisSpell, formWord, wordArray.slice(i+counter, i+counter+3), player.name);
-        if (wordArray[i+counter+3] != "ET"){ break; }
-        // Progress to next spell line
-        counter += 3;
+        processSpell(spell, player.name);
       }
     } else {
       // Runs if the above check fails
@@ -89,6 +80,58 @@ world.afterEvents.chatSend.subscribe(e => {
       if (wand.typeId == "bw:empty_spell_journal") {
         player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§aInsufficient Xp. You need ${oE - player.level} more level(s).§r\"}]}`);
       }
+    }
+  }
+  
+  // Verbal Casting Mechanic
+  if (msg.startsWith(selfCastPrefix)) {
+    let spokenSpell = msg.slice(1, msg.length + 1).toUpperCase();
+    //Turn msg into an array of words and loop through it
+    let wordArray = spokenSpell.replaceAll(" ET ", "-").split('-');
+    let spell = wordArray[0].split(' ', 4);
+    for (let type of typeWord) {
+      if (type.word == spell[0] && !checkPlayerTags(type.tag, player)) {
+        spell[0] = '???';
+      }
+    }
+    for (let effect of effectWord) {
+      if (effect.word == spell[1] && !checkPlayerTags(effect.tag, player)) {
+        spell[1] = '???';
+      }
+    }
+    for (let modifier of modifierWord) {
+      for (let v = 0; v < [spell[2], spell[3]].length; v++) {
+        if (modifier.word == [spell[2], spell[3]][v]) {
+          // Check for necessary items and remove them when found
+          if (checkItems(player, modifier.required.item)) {
+            if (modifier.required.consumed == true) {
+              let reqItem = modifier.required.item.replace("minecraft:", "");
+              player.runCommandAsync(`clear @s ${reqItem} 0 1`);
+            }
+          } else {
+            [spell[2], spell[3]][v] = '???';
+          }
+        }
+      }
+    }
+    if (checkValidity(spell) && player.level > 0) {
+      switch (spell[0]) {
+        case "ETE":
+          castSelf(spell[1], [spell[2] != undefined ? spell[2] : "HET", spell[3] != undefined ? spell[3] : "HET"], player);
+          player.addLevels(-1);
+          break;
+        case "WIX":
+          castPulse(spell[1], [spell[2] != undefined ? spell[2] : "HET", spell[3] != undefined ? spell[3] : "HET"], player);
+          player.addLevels(-1);
+          break;
+      }
+    } else
+    if (!checkValidity(spell)) {
+      player.runCommandAsync("tellraw @s {\"rawtext\": [{\"text\": \"§cYour spoken spell is invalid. The words steal your vitality as they fade into obscurity.§r\"}]}");
+      player.runCommandAsync("damage @s 2 entity_attack");
+    } else
+    if (player.level <= 0) {
+      player.runCommandAsync("tellraw @s {\"rawtext\": [{\"text\": \"§cInsufficient XP Levels.§r\"}]}");
     }
   }
 });

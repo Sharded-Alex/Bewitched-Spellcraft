@@ -1,6 +1,6 @@
 import {world, system, ItemStack, MolangVariableMap, Vector, EntityHealthComponent, Direction} from "@minecraft/server";
 import {typeWord, effectWord, modifierWord} from "./spellPiece.js";
-import {checkPlayerTags} from "./Main.js"
+import {checkPlayerTags} from "./Main.js";
 
 // My Functions
 // Gets the particle on a spell
@@ -12,27 +12,29 @@ export function getParticle(player) {
   const offhandItem = equipment.getEquipment("Offhand");
   
   let colorLore;
-  if (item.hasTag("bw:occult_focus") && offhandItem.typeId == "bw:spell_journal") {
+  if (item != undefined && item.hasTag("bw:occult_focus") && offhandItem.typeId == "bw:spell_journal") {
     colorLore = offhandItem.getLore();
   }
-  if (item.typeId == "bw:inscribed_rune") {
+  if (item != undefined && item.typeId == "bw:inscribed_rune") {
     colorLore = item.getLore();
   }
   
   let returnedParticle = "bw:wispy_particle_";
   let returnedColor = [Math.random(), Math.random(), Math.random()];
   
-  let colorArray = colorLore[0].split(" + ");
-  if (colorArray[0] == "YIS") {
-    for (let partcl of effectWord) {
-      if (colorArray[1] == partcl.word) {
-        returnedParticle = partcl.value.particleName;
+  if (colorLore != undefined) {
+    let colorArray = colorLore[0].split(" + ");
+    if (colorArray[0] == "YIS") {
+      for (let partcl of effectWord) {
+        if (colorArray[1] == partcl.word) {
+          returnedParticle = partcl.value.particleName;
+        }
       }
-    }
-    
-    for (let clr of modifierWord) {
-      if (colorArray[2] == clr.word && clr.modifierType == "color") {
-        returnedColor = clr.value;
+      
+      for (let clr of modifierWord) {
+        if (colorArray[2] == clr.word && clr.modifierType == "color") {
+          returnedColor = clr.value;
+        }
       }
     }
   }
@@ -181,7 +183,7 @@ export function reduceDurability(player, inventory, item, currentDurability, amo
     inventory.setItem(player.selectedSlot, newItem);
   }
 }
-// Check ho valid a spell is
+// Check how valid a spell is
 export function checkValidity(spellArray) {
   for (let word of spellArray) {
     if (!([...typeWord, ...effectWord, ...modifierWord].map((e) => e.word).includes(word))) {
@@ -293,6 +295,7 @@ export function castSelf(effect, modifier, player) {
       }
     }
   }
+  
   
   spawnParticle(`${getParticle(player)[0] + "self"}`, player.location.x, player.location.y, player.location.z, player.dimension.id, getParticle(player)[1][0], getParticle(player)[1][1], getParticle(player)[1][2]);
   
@@ -905,15 +908,15 @@ export function castProj(effectArrays, player, appArray) {
 
 // Where all the spell processing takes place!
 // Attaches the spell to the spell item
-export function processSpell(appearance, form, array, playerName) {
+export function processSpell(array, playerName) {
   const plr = world.getPlayers({name: playerName})[0];
   const inv = plr.getComponent("inventory").container;
   const items = inv.getItem(plr.selectedSlot);
   
   // Get all the words of the spell
-  let effectName = form;
-  let typeName = array[0];
-  let modifierName = [array[1], array[2]];
+  let effectName = array[0];
+  let typeName = array[1];
+  let modifierName = [array[2] != undefined ? array[2] : "HET", array[3] != undefined ? array[3] : "HET"];
 
   // Check for player qualifications
   for (let type of typeWord) {
@@ -944,21 +947,27 @@ export function processSpell(appearance, form, array, playerName) {
   
   let testLore = items.getLore();
   let testDouble = `${effectName} + ${typeName}`;
+  let testType = `${effectName}`;
   
   for (let test of testLore) {
     let spell = test.split(' + ');
     let spellFragment = `${spell[0]} + ${spell[1]}`;
+    let spellForm = `${spell[0]}`;
     
     if (typeName != "SINBASHUS" && testDouble == spellFragment) {
+      return;
+    }
+    
+    if (testType != "YIS" && testType != spellForm) {
       return;
     }
   }
   
   let lore = items.getLore();
-    if (appearance != undefined) {
-    lore.push(`${appearance[0]} + ${appearance[1]} + ${appearance[2]} + ${appearance[3]}`);
+  if (effectName != "YIS") {
+    lore.push(`${effectName} + ${typeName} + ${modifierName[0]} + ${modifierName[1]}`);
   }
-  if (appearance == undefined) {
+  if (effectName == "YIS") {
     lore.unshift(`${effectName} + ${typeName} + ${modifierName[0]} + ${modifierName[1]}`);
   }
 
@@ -981,12 +990,14 @@ export function addSpellName(name, player) {
   let item = inventory.getItem(player.selectedSlot);
   item.nameTag = `${name}`;
 
-  inventory.setItem(player.selectedSlot, item);
   // Popup Messages for Imbuement Success
-  if (item.typeId == "bw:baked_rune") {
+  if (item.typeId == "bw:inscribed_rune") {
     player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§6${item.amount} §aBaked Rune(s) was inscribed with ${name}.§r\"}]}`);
   }
-  if (item.typeId == "bw:inscribed_spell_journal") {
+  if (item.typeId == "bw:spell_journal") {
     player.runCommandAsync(`tellraw @s {\"rawtext\": [{\"text\": \"§a${name} was successfully inscribed.§r\"}]}`);
   }
+  
+  // Set Item
+  inventory.setItem(player.selectedSlot, item);
 }
