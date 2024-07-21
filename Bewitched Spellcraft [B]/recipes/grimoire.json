@@ -1,0 +1,25 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bs:grimoire_craft"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "#T"
+    ],
+    "key": {
+      "#": {
+        "item": "minecraft:book"
+      },
+      "T": {
+        "item": "minecraft:leather"
+      }
+    },
+    "result": {
+      "item": "bs:spell_journal"
+    }
+  }
+}

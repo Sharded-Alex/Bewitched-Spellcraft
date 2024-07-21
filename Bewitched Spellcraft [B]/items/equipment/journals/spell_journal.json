@@ -1,0 +1,32 @@
+{
+	"format_version": "1.20.50",
+	"minecraft:item": {
+		"description": {
+			"identifier": "bs:spell_journal",
+			"menu_category": {
+			  "category": "items"
+			}
+		},
+		"components": {
+			"minecraft:max_stack_size": {
+			  "value": 1
+			},
+			"minecraft:hand_equipped": {
+			  "value": false
+			},
+			"minecraft:allow_off_hand": true,
+			"minecraft:can_destroy_in_creative": false,
+			"minecraft:tags": {
+			  "tags": [
+			    "bs:spell_grimoire"
+			  ]
+			},
+			"minecraft:icon": {
+				"texture": "spell_journal"
+			},
+			"minecraft:use_modifiers": {
+        "use_duration": 0.1
+      }
+		}
+	}
+}

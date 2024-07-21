@@ -1,0 +1,29 @@
+{
+	"format_version": "1.20.50",
+	"minecraft:item": {
+		"description": {
+			"identifier": "bs:lapis_staff"
+		},
+		"components": {
+			"minecraft:max_stack_size": 1,
+			"minecraft:hand_equipped": true,
+			"minecraft:can_destroy_in_creative": false,
+			"minecraft:repairable": {
+			  "repair_items": [
+			    {
+			      "items": [
+			        "minecraft:lapis_lazuli"
+			      ],
+			      "repair_amount": "math.floor(q.max_durability * 0.15)"
+			    }
+			  ]
+			},
+			"minecraft:icon": {
+				"texture": "lapis_staff"
+			},
+			"minecraft:use_modifiers": {
+        "use_duration": 1
+      }
+		}
+	}
+}

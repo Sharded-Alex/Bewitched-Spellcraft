@@ -1,0 +1,30 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bs:lapis_staff"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "  L",
+      " / ",
+      "#  "
+    ],
+    "key": {
+      "#": {
+        "item": "minecraft:copper_ingot"
+      },
+      "/": {
+        "item": "minecraft:stick"
+      },
+      "L": {
+        "item": "minecraft:lapis_lazuli"
+      }
+    },
+    "result": {
+      "item": "bs:lapis_staff"
+    }
+  }
+}

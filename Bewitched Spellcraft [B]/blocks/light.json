@@ -1,0 +1,45 @@
+{
+  "format_version": "1.19.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "bs:fus_light"
+    },
+    "components": {
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "transparent",
+          "render_method": "alpha_test"
+        }
+      },
+      "minecraft:unit_cube": {},
+      "minecraft:selection_box": {
+        "origin": [-8, 0,-8],
+        "size": [16, 16, 16]
+      },
+      "minecraft:collision_box": false,
+      "minecraft:queued_ticking": {
+        "looping": true,
+        "interval_range": [25, 35],
+        "on_tick": {
+          "event": "bw:shine"
+        }
+      },
+	    "minecraft:explosion_resistance": 0,
+      "minecraft:destroy_time": 99999,
+      "minecraft:breathability": "air",
+      "minecraft:friction": 0.45,
+      "minecraft:block_light_filter": 0.0,
+      "minecraft:block_light_emission": 1.0
+    },
+    "events": {
+      "bw:shine": {
+        "run_command": {
+          "command": [
+            "particle bw:light_spark ~~~"
+          ],
+          "target": "self"
+        }
+      }
+    }
+  }
+}

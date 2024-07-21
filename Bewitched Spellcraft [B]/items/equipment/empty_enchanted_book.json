@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.50",
+	"minecraft:item": {
+		"description": {
+			"identifier": "bs:empty_enchanted_book",
+			"menu_category": {
+			  "is_hidden_in_commands": true
+			}
+		},
+		"components": {
+			"minecraft:max_stack_size": {
+			  "value": 1
+			},
+			"minecraft:hand_equipped": false,
+			"minecraft:glint": false,
+			"minecraft:allow_off_hand": true,
+			"minecraft:icon": {
+				"texture": "book_enchanted"
+			},
+			"minecraft:use_modifiers": {
+        "use_duration": 1
+      }
+		}
+	}
+}
