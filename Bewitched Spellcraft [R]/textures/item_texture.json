@@ -1,0 +1,29 @@
+{
+   "resource_pack_name" : "vanilla",
+   "texture_data" : {
+      "clay_rune" : {
+         "textures" : "textures/items/tools/activated_spellrune"
+      },
+      "spell_guide" : {
+         "textures" : "textures/items/spellbooks/bewitched_book"
+      },
+      "empty_spell_journal" : {
+         "textures" : "textures/items/spellbooks/empty_spellbook"
+      },
+      "spell_journal" : {
+         "textures" : "textures/items/spellbooks/named_spellbook"
+      },
+      "ink_quill" : {
+         "textures" : "textures/items/tools/ink_quill"
+      },
+      "written_occult_paper" : {
+         "textures" : "textures/items/tools/written_occult_paper"
+      },
+      "research_paper" : {
+         "textures" : "textures/items/tools/research"
+      },
+      "lapis_staff" : {
+         "textures" : "textures/items/tools/lapis_staff"
+      }
+   }
+}

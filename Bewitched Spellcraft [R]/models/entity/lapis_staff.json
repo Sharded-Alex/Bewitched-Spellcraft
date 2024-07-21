@@ -1,0 +1,76 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.lapis_staff",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "waist",
+					"parent": "root",
+					"pivot": [0, 12, 0]
+				},
+				{
+					"name": "body",
+					"parent": "waist",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "head",
+					"parent": "body",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "leftArm",
+					"parent": "body",
+					"pivot": [5, 22, 0]
+				},
+				{
+					"name": "leftItem",
+					"parent": "leftArm",
+					"pivot": [6, 15, 1]
+				},
+				{
+					"name": "rightArm",
+					"parent": "body",
+					"pivot": [-5, 22, 0]
+				},
+				{
+					"name": "rightItem",
+					"parent": "rightArm",
+					"pivot": [-6, 15, 1]
+				},
+				{
+					"name": "leftLeg",
+					"parent": "root",
+					"pivot": [1.9, 12, 0]
+				},
+				{
+					"name": "rightLeg",
+					"parent": "root",
+					"pivot": [-1.9, 12, 0]
+				},
+				{
+					"name": "root_item",
+					"parent": "rightItem",
+					"pivot": [0, 0, 0],
+					"binding": "q.item_slot_to_bone_name(c.item_slot)",
+					"cubes": [
+						{"origin": [-1, 0, -1], "size": [2, 24, 2], "uv": [0, 0]},
+						{"origin": [-9, 22, 0], "size": [10, 10, 0], "pivot": [0, 23, 0], "rotation": [-90, -45, 90], "uv": [8, 0]}
+					]
+				}
+			]
+		}
+	]
+}

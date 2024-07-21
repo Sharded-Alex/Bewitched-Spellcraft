@@ -1,0 +1,24 @@
+{
+    "format_version": 2,
+    "header": {
+        "description": "Bind your spells and blast your foes!",
+        "name": "Bewitched Spellcraft [R]",
+        "uuid": "8100df1a-6a14-4284-b445-c8d3d3a32caa",
+        "version": [1, 2, 0],
+        "min_engine_version": [ 1, 20, 30 ]
+    },
+    "modules": [
+        {
+            "description": "",
+            "type": "resources",
+            "uuid": "41d7e5cf-f92c-410c-9372-56a620e42de3",
+            "version": [1, 2, 0]
+        }
+    ],
+    "dependencies": [
+      {
+        "uuid": "bd8723a6-77b6-45e6-ac54-6cb6492353ff",
+        "version": [1, 2, 0]
+      }
+    ]
+}

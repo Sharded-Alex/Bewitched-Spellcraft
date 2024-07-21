@@ -1,0 +1,47 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+	  "animation.lapis_staff.first_person": {
+			"loop": true,
+			"bones": {
+				"root_item": {
+					"rotation": [50, 20, -145],
+					"position": [-6, 18, 16.5]
+				}
+			}
+		},
+		"animation.lapis_staff.third_person": {
+			"loop": true,
+			"bones": {
+				"rightItem": {
+					"position": [-6, -9, -1]
+				},
+				"leftItem": {
+					"position": [6, -9, -1]
+				},
+				"root_item": {
+					"rotation": [75, 0, 0],
+					"position": [-5.5, 9.5, 12.5]
+				}
+			}
+		},
+		"animation.lapis_staff.wield_first_person": {
+      "loop": true,
+      "bones": {
+        "pole": {
+          "position": [ -7.0, -3.0, -2.0 ],
+          "rotation": [ 152.0, -9.0, 25.0 ]
+        }
+      }
+    },
+    "animation.lapis_staff.wield_third_person": {
+      "loop": true,
+      "bones": {
+        "pole": {
+          "position": [ 1.5, -2.5, -10.5 ],
+          "rotation": [ 97.0, -1.5, -49.0 ]
+        }
+      }
+    }
+	}
+}
