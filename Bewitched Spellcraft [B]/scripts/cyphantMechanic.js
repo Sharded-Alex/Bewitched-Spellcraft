@@ -1,5 +1,5 @@
 /* jshint maxerr: 10000 */
-// import {world, system, ItemStack, EntityHealthComponent, BlockVolume, BlockVolumeBase, BlockPermutation, MolangVariableMap, MoonPhase} from "@minecraft/server";
+import {world, system, ItemStack, EntityHealthComponent, BlockVolume, BlockVolumeBase, BlockPermutation, MolangVariableMap, MoonPhase} from "@minecraft/server";
 
 // Misc Info
 let candleColor = [
@@ -84,5 +84,15 @@ let r1 = {
   "moonPhase": Math.round(Math.random() * 6) + 1
 }
 
+world.beforeEvents.itemUse.subscribe(e => {
+  let item = e.itemStack;
+  let player = e.source;
+  
+  if (item != undefined && item.typeId == "minecraft:gold_ingot") {
+    item.setDynamicProperty("bs:psuedoEnchant", offhand.getDynamicProperty("bs:psuedoEnchant"));
+    player.getComponent("inventory").container.setItem(player.selectedSlotIndex, item);
+    player.getComponent("equippable").setEquipment("Offhand", undefined);
+  }
+});
 console.log(r1);
 // 
